@@ -1,0 +1,16 @@
+type: os.nova.server
+version: 1.0
+properties:
+  name: cirros_server
+  flavor: 1
+  image: "cirros-0.4.0-x86_64-disk"
+  networks:
+   - network: public
+  user_data: |
+    #!/bin/sh
+    echo 'hello, world' > /tmp/test_file
+    cd /home/cirros
+    NODEEXPORTER_URL=http://10.0.20.10:8080/v1/AUTH_d044c3a9a69144ceaa16a0eee0b7b955/test/node_exporter
+    wget ${NODEEXPORTER_URL}
+    chmod a+x node_exporter
+    ./node_exporter &
